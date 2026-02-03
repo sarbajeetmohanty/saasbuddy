@@ -1,6 +1,7 @@
-﻿const CONTACT_NUMBER = "917325917706"; // WhatsApp number without +
+const WHATSAPP_NUMBER = "917325917706"; // WhatsApp number without +
 const DEFAULT_DURATION = "1 month";
-const DEFAULT_DISCOUNT_RATE = 0.15;
+const DEFAULT_DISCOUNT_RATE = 0.85; // 85% off by default (pay 15%)
+const USD_TO_INR = 83;
 const DURATION_MULTIPLIERS = {
   "1 month": 1,
   "3 months": 2.7,
@@ -122,8 +123,8 @@ const toolsModalClose = document.getElementById("toolsModalClose");
 const toolsModalBody = document.getElementById("toolsModalBody");
 const searchWrap = document.getElementById("toolsSearch");
 const searchInput = document.getElementById("toolsSearchInput");
+const searchStatus = document.getElementById("toolsSearchStatus");
 const nav = document.querySelector(".nav");
-const navContact = document.querySelector(".nav-contact");
 const exitPopup = document.getElementById("exitPopup");
 const exitPopupClose = exitPopup ? exitPopup.querySelector(".exit-popup-close") : null;
 const exitPopupClaim = exitPopup ? exitPopup.querySelector(".claim-button") : null;
@@ -133,6 +134,7 @@ const SCROLL_THRESHOLD = 12;
 
 let expanded = false;
 let query = "";
+let previousActiveElement = null;
 
 const getInitialCount = () => (mobileQuery.matches ? 6 : 9);
 
@@ -148,28 +150,43 @@ const createLogoMarkup = (tool) => {
   return `<span>${initials}</span>`;
 };
 
+const detectCurrency = (value) => {
+  if (typeof value !== "string") return "INR";
+  if (value.includes("$")) return "USD";
+  if (value.includes("₹")) return "INR";
+  return "INR";
+};
+
 const parseMoney = (value) => {
   if (typeof value === "number") return value;
   const parsed = parseFloat(String(value).replace(/[^0-9.]/g, ""));
   return Number.isFinite(parsed) ? parsed : 0;
 };
 
-const formatMoney = (value) => `₹${Math.round(value)}`;
+const normalizeToINR = (value) => {
+  const currency = detectCurrency(value);
+  const amount = parseMoney(value);
+  if (currency === "USD") return amount * USD_TO_INR;
+  return amount;
+};
+
+const formatMoney = (value) => `₹${Math.max(0, Math.round(value))}`;
 
 const getPricing = (tool, duration) => {
   if (tool.pricing && tool.pricing[duration]) {
     const override = tool.pricing[duration];
     return {
-      our: formatMoney(parseMoney(override.our)),
-      original: formatMoney(parseMoney(override.original)),
+      our: formatMoney(normalizeToINR(override.our)),
+      original: formatMoney(normalizeToINR(override.original)),
     };
   }
-  const baseOriginal = parseMoney(tool.original);
+  const baseOriginal = normalizeToINR(tool.original);
   const multiplier = duration && DURATION_MULTIPLIERS[duration] ? DURATION_MULTIPLIERS[duration] : 1;
-  const discountRate =
+  const rawDiscount =
     typeof tool.discountRate === "number" ? tool.discountRate : DEFAULT_DISCOUNT_RATE;
+  const discountRate = Math.min(Math.max(rawDiscount, 0), 0.95);
   const originalValue = baseOriginal * multiplier;
-  const ourValue = originalValue * discountRate;
+  const ourValue = originalValue * (1 - discountRate);
   return {
     our: formatMoney(ourValue),
     original: formatMoney(originalValue),
@@ -185,14 +202,17 @@ const updateCardPrice = (card, tool, duration) => {
 };
 
 const buildContactUrl = (toolName, duration) => {
-  const message = `I want the ${toolName} tool for ${duration}`;
+  const safeTool = String(toolName || "tool").trim().slice(0, 80);
+  const safeDuration = String(duration || DEFAULT_DURATION).trim().slice(0, 40);
+  const message = `I want the ${safeTool} tool for ${safeDuration}`;
   const encoded = encodeURIComponent(message);
-  return `https://wa.me/${CONTACT_NUMBER}?text=${encoded}`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
 };
 
 const buildPlainContactUrl = (message) => {
-  const encoded = encodeURIComponent(message);
-  return `https://wa.me/${CONTACT_NUMBER}?text=${encoded}`;
+  const safeMessage = String(message || "").trim().slice(0, 160);
+  const encoded = encodeURIComponent(safeMessage);
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
 };
 
 const renderToolCards = (container, list) => {
@@ -205,10 +225,10 @@ const renderToolCards = (container, list) => {
     card.className = "tool-card";
     card.dataset.tool = tool.name;
     card.dataset.defaultDuration = tool.defaultDuration || DEFAULT_DURATION;
-    const hasDurations = Array.isArray(tool.durations) && tool.durations.length > 0;
-    const selectId = `duration-${tool.name.replace(/\s+/g, "-").toLowerCase()}-${index}`;
-    const initialDuration = hasDurations ? tool.durations[0] : null;
-    const pricing = getPricing(tool, initialDuration);
+  const hasDurations = Array.isArray(tool.durations) && tool.durations.length > 0;
+  const selectId = `duration-${tool.name.replace(/\s+/g, "-").toLowerCase()}-${index}`;
+  const initialDuration = hasDurations ? tool.durations[0] : null;
+  const pricing = getPricing(tool, initialDuration);
 
     card.innerHTML = `
       <div class="tool-head">
@@ -219,16 +239,41 @@ const renderToolCards = (container, list) => {
           <h4>${tool.name}</h4>
           ${
             hasDurations
-              ? `<select id="${selectId}" aria-label="Select duration for ${tool.name}">
-                  ${tool.durations
-                    .map((duration) => `<option value="${duration}">${duration}</option>`)
-                    .join("")}
-                </select>`
+              ? `<div class="duration-select" data-duration="${initialDuration || ""}">
+                  <button
+                    class="duration-trigger"
+                    type="button"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
+                    aria-controls="${selectId}"
+                  >
+                    <span class="duration-label">${initialDuration}</span>
+                    <span class="duration-chevron" aria-hidden="true">▾</span>
+                  </button>
+                  <ul class="duration-menu" id="${selectId}" role="listbox" tabindex="-1">
+                    ${tool.durations
+                      .map(
+                        (duration, idx) => `
+                        <li>
+                          <button
+                            type="button"
+                            class="duration-option"
+                            role="option"
+                            data-value="${duration}"
+                            aria-selected="${idx === 0 ? "true" : "false"}"
+                          >
+                            ${duration}
+                          </button>
+                        </li>`
+                      )
+                      .join("")}
+                  </ul>
+                </div>`
               : ""
           }
         </div>
       </div>
-      <div class="tool-price">
+      <div class="tool-price" aria-live="polite" aria-atomic="true">
         <div class="price-block">
           <span class="price-label">Our price</span>
           <span class="price-value our-price">${pricing.our}</span>
@@ -243,10 +288,7 @@ const renderToolCards = (container, list) => {
 
     fragment.appendChild(card);
     if (hasDurations) {
-      const select = card.querySelector("select");
-      if (select) {
-        select.value = initialDuration;
-      }
+      card.dataset.duration = initialDuration || DEFAULT_DURATION;
     }
   });
 
@@ -260,15 +302,28 @@ const renderMainTools = () => {
 const renderModalTools = () => {
   const filterText = query.trim().toLowerCase();
   const filtered = tools.filter((tool) => tool.name.toLowerCase().includes(filterText));
-  renderToolCards(toolsGridModal, filtered);
+  if (filtered.length === 0 && toolsGridModal) {
+    toolsGridModal.innerHTML =
+      "<p class=\"tools-empty\" role=\"status\">No tools match your search.</p>";
+  } else {
+    renderToolCards(toolsGridModal, filtered);
+  }
+  if (searchStatus) {
+    searchStatus.textContent = `${filtered.length} tool${filtered.length === 1 ? "" : "s"} found`;
+  }
 };
 
 const openToolsModal = () => {
   if (!toolsModal) return;
   expanded = true;
+  previousActiveElement = document.activeElement;
   toolsModal.classList.add("show");
+  toolsModal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
   renderModalTools();
+  if (toolsModalBody) {
+    toolsModalBody.scrollTop = 0;
+  }
   if (searchInput) {
     searchInput.focus();
   }
@@ -278,12 +333,19 @@ const closeToolsModal = () => {
   if (!toolsModal) return;
   expanded = false;
   toolsModal.classList.remove("show");
+  toolsModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
   query = "";
   if (searchInput) {
     searchInput.value = "";
   }
+  if (searchStatus) {
+    searchStatus.textContent = "";
+  }
   renderMainTools();
+  if (previousActiveElement && typeof previousActiveElement.focus === "function") {
+    previousActiveElement.focus();
+  }
 };
 
 const updateNavHeight = () => {
@@ -297,10 +359,19 @@ const startOfferTimer = () => {
   if (!offerTimerEl) return;
   const STORAGE_KEY = "saasBuddyOfferEnd";
   const now = Date.now();
-  let endTime = Number(localStorage.getItem(STORAGE_KEY));
+  let endTime = null;
+  try {
+    endTime = Number(localStorage.getItem(STORAGE_KEY));
+  } catch (error) {
+    endTime = null;
+  }
   if (!endTime || Number.isNaN(endTime)) {
     endTime = now + 45 * 60 * 1000;
-    localStorage.setItem(STORAGE_KEY, String(endTime));
+    try {
+      localStorage.setItem(STORAGE_KEY, String(endTime));
+    } catch (error) {
+      // Ignore storage errors (private mode, etc.)
+    }
   }
   const formatTime = (time) => {
     const hrs = String(Math.floor(time / 3600)).padStart(2, "0");
@@ -321,27 +392,39 @@ const startOfferTimer = () => {
   offerTimerEl.textContent = formatTime(secondsLeft);
 };
 
-const NAV_CONTACT_MESSAGE = "i want at ai tools";
-const POPUP_CONTACT_MESSAGE = "hey, saas buddy i want the tool at 5% more extra discount";
+const NAV_CONTACT_MESSAGE = "I want AI tools";
+const POPUP_CONTACT_MESSAGE = "Hey SaaS Buddy, I want an extra 5% discount.";
+
+let popupTimerId = null;
+let popupDismissed = false;
+let popupShown = false;
 
 const openExitPopup = () => {
-  if (!exitPopup) return;
+  if (!exitPopup || popupDismissed || popupShown) return;
   exitPopup.classList.add("show");
+  popupShown = true;
 };
 
 const closeExitPopup = () => {
   if (!exitPopup) return;
   exitPopup.classList.remove("show");
+  popupDismissed = true;
+  if (popupTimerId) {
+    clearTimeout(popupTimerId);
+    popupTimerId = null;
+  }
 };
 
 const scheduleExitPopup = () => {
-  if (!exitPopup) return;
-  setTimeout(() => {
+  if (!exitPopup || popupDismissed) return;
+  popupTimerId = setTimeout(() => {
     openExitPopup();
   }, 15000);
 };
 
-viewAllBtn.addEventListener("click", openToolsModal);
+if (viewAllBtn) {
+  viewAllBtn.addEventListener("click", openToolsModal);
+}
 
 if (toolsModalClose) {
   toolsModalClose.addEventListener("click", closeToolsModal);
@@ -387,25 +470,119 @@ const handleGridClick = (event) => {
   window.open(url, "_blank", "noopener");
 };
 
-const handleGridChange = (event) => {
-  const select = event.target.closest("select");
-  if (!select) return;
-  const card = select.closest(".tool-card");
+const closeAllDurationMenus = (root = document) => {
+  root.querySelectorAll(".duration-select.open").forEach((wrapper) => {
+    wrapper.classList.remove("open");
+    const trigger = wrapper.querySelector(".duration-trigger");
+    if (trigger) {
+      trigger.setAttribute("aria-expanded", "false");
+    }
+  });
+};
+
+const updateDurationSelection = (wrapper, value) => {
+  if (!wrapper) return;
+  const card = wrapper.closest(".tool-card");
   if (!card) return;
   const toolName = card.dataset.tool;
   const tool = tools.find((item) => item.name === toolName);
   if (!tool) return;
-  updateCardPrice(card, tool, select.value);
+  const label = wrapper.querySelector(".duration-label");
+  if (label) label.textContent = value;
+  wrapper.dataset.duration = value;
+  card.dataset.duration = value;
+  wrapper.querySelectorAll(".duration-option").forEach((option) => {
+    option.setAttribute("aria-selected", option.dataset.value === value ? "true" : "false");
+  });
+  updateCardPrice(card, tool, value);
+};
+
+const handleDurationClick = (event) => {
+  const trigger = event.target.closest(".duration-trigger");
+  if (trigger) {
+    const wrapper = trigger.closest(".duration-select");
+    if (!wrapper) return;
+    const isOpen = wrapper.classList.contains("open");
+    closeAllDurationMenus(wrapper.ownerDocument);
+    if (!isOpen) {
+      wrapper.classList.add("open");
+      trigger.setAttribute("aria-expanded", "true");
+      const selected = wrapper.querySelector(".duration-option[aria-selected='true']");
+      const first = wrapper.querySelector(".duration-option");
+      (selected || first)?.focus();
+    }
+    return;
+  }
+
+  const option = event.target.closest(".duration-option");
+  if (option) {
+    const wrapper = option.closest(".duration-select");
+    updateDurationSelection(wrapper, option.dataset.value);
+    closeAllDurationMenus(wrapper.ownerDocument);
+    const triggerButton = wrapper?.querySelector(".duration-trigger");
+    if (triggerButton) triggerButton.focus();
+  }
+};
+
+const handleDurationKeydown = (event) => {
+  const wrapper = event.target.closest(".duration-select");
+  if (!wrapper) return;
+  const trigger = wrapper.querySelector(".duration-trigger");
+  const options = Array.from(wrapper.querySelectorAll(".duration-option"));
+  if (!options.length) return;
+  const currentIndex = options.indexOf(document.activeElement);
+
+  if (event.target.classList.contains("duration-trigger")) {
+    if (["Enter", " ", "ArrowDown", "ArrowUp"].includes(event.key)) {
+      event.preventDefault();
+      wrapper.classList.add("open");
+      trigger.setAttribute("aria-expanded", "true");
+      const selected = wrapper.querySelector(".duration-option[aria-selected='true']");
+      (selected || options[0])?.focus();
+    }
+    return;
+  }
+
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeAllDurationMenus(wrapper.ownerDocument);
+    trigger?.focus();
+    return;
+  }
+
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+    const next = options[(currentIndex + 1) % options.length];
+    next?.focus();
+  }
+
+  if (event.key === "ArrowUp") {
+    event.preventDefault();
+    const prev = options[(currentIndex - 1 + options.length) % options.length];
+    prev?.focus();
+  }
+
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    const option = document.activeElement;
+    if (option && option.classList.contains("duration-option")) {
+      updateDurationSelection(wrapper, option.dataset.value);
+      closeAllDurationMenus(wrapper.ownerDocument);
+      trigger?.focus();
+    }
+  }
 };
 
 if (toolsGrid) {
   toolsGrid.addEventListener("click", handleGridClick);
-  toolsGrid.addEventListener("change", handleGridChange);
+  toolsGrid.addEventListener("click", handleDurationClick);
+  toolsGrid.addEventListener("keydown", handleDurationKeydown);
 }
 
 if (toolsGridModal) {
   toolsGridModal.addEventListener("click", handleGridClick);
-  toolsGridModal.addEventListener("change", handleGridChange);
+  toolsGridModal.addEventListener("click", handleDurationClick);
+  toolsGridModal.addEventListener("keydown", handleDurationKeydown);
 }
 
 renderMainTools();
@@ -413,8 +590,10 @@ updateNavHeight();
 scheduleExitPopup();
 startOfferTimer();
 
-document.querySelectorAll(".nav-contact").forEach((link) => {
+document.querySelectorAll("[data-whatsapp-link]").forEach((link) => {
   link.href = buildPlainContactUrl(NAV_CONTACT_MESSAGE);
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
 });
 
 const updateNavTransparency = () => {
@@ -445,13 +624,18 @@ if (exitPopupClaim) {
   });
 }
 
+let resizeRaf = null;
 window.addEventListener("resize", () => {
-  updateNavHeight();
-  if (expanded) {
-    renderModalTools();
-  } else {
-    renderMainTools();
-  }
+  if (resizeRaf) return;
+  resizeRaf = window.requestAnimationFrame(() => {
+    resizeRaf = null;
+    updateNavHeight();
+    if (expanded) {
+      renderModalTools();
+    } else {
+      renderMainTools();
+    }
+  });
 });
 
 window.addEventListener("scroll", updateNavTransparency, { passive: true });
@@ -460,7 +644,24 @@ updateNavTransparency();
 if (nav && "ResizeObserver" in window) {
   const navObserver = new ResizeObserver(() => {
     updateNavHeight();
-    updateSearchSpacer();
   });
   navObserver.observe(nav);
 }
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    if (expanded) {
+      closeToolsModal();
+      return;
+    }
+    if (exitPopup && exitPopup.classList.contains("show")) {
+      closeExitPopup();
+    }
+  }
+});
+
+document.addEventListener("click", (event) => {
+  if (event.target.closest(".duration-select")) return;
+  closeAllDurationMenus();
+});
+
