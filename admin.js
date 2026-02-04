@@ -6,6 +6,7 @@ const statusEl = document.getElementById("status");
 const loadDataBtn = document.getElementById("loadDataBtn");
 const saveDataBtn = document.getElementById("saveDataBtn");
 const addToolBtn = document.getElementById("addToolBtn");
+const toolsMotionSelect = document.getElementById("toolsMotion");
 const addProofBtn = document.getElementById("addProofBtn");
 const addReviewBtn = document.getElementById("addReviewBtn");
 const refreshPreviewBtn = document.getElementById("refreshPreviewBtn");
@@ -23,6 +24,7 @@ const navLinksList = document.getElementById("navLinksList");
 const addNavLinkBtn = document.getElementById("addNavLinkBtn");
 const announcementEnabledToggle = document.getElementById("announcementEnabled");
 const announcementDirectionSelect = document.getElementById("announcementDirection");
+const announcementMotionSelect = document.getElementById("announcementMotion");
 const announcementItemsList = document.getElementById("announcementItemsList");
 const addAnnouncementItemBtn = document.getElementById("addAnnouncementItemBtn");
 const announcementCtaLabelInput = document.getElementById("announcementCtaLabel");
@@ -337,6 +339,8 @@ const defaultContent = {
     featured: "1",
     proofs: "1",
     reviews: "1",
+    announcement: "1",
+    tools: "1",
   },
 };
 const defaultData = {
@@ -509,6 +513,11 @@ const defaultData = {
 
 const mergeArray = (value, fallback) => (Array.isArray(value) ? value : fallback);
 
+const normalizeMotion = (value, allowed, fallback) => {
+  const normalized = String(value || "").trim();
+  return allowed.includes(normalized) ? normalized : fallback;
+};
+
 const normalizeNavLinks = (links) => {
   const cleaned = Array.isArray(links)
     ? links
@@ -675,9 +684,31 @@ const mergeContent = (content = {}) => ({
     bgLinear3: content.theme?.bgLinear3 || defaultContent.theme.bgLinear3,
   },
   animations: {
-    featured: content.animations?.featured || defaultContent.animations.featured,
-    proofs: content.animations?.proofs || defaultContent.animations.proofs,
-    reviews: content.animations?.reviews || defaultContent.animations.reviews,
+    featured: normalizeMotion(
+      content.animations?.featured,
+      ["1", "2", "3", "4", "5", "6"],
+      defaultContent.animations.featured
+    ),
+    proofs: normalizeMotion(
+      content.animations?.proofs,
+      ["1", "2", "3", "4", "5", "6"],
+      defaultContent.animations.proofs
+    ),
+    reviews: normalizeMotion(
+      content.animations?.reviews,
+      ["1", "2", "3", "4", "5", "6", "7"],
+      defaultContent.animations.reviews
+    ),
+    announcement: normalizeMotion(
+      content.animations?.announcement,
+      ["1", "2", "3"],
+      defaultContent.animations.announcement
+    ),
+    tools: normalizeMotion(
+      content.animations?.tools,
+      ["1", "2", "3", "4", "5", "6", "7"],
+      defaultContent.animations.tools
+    ),
   },
   themeHistory: mergeArray(content.themeHistory, defaultContent.themeHistory),
 });
@@ -1679,6 +1710,9 @@ const setContent = (content = defaultContent) => {
   if (featuredMotionSelect) featuredMotionSelect.value = animations.featured || "1";
   if (proofsMotionSelect) proofsMotionSelect.value = animations.proofs || "1";
   if (reviewsMotionSelect) reviewsMotionSelect.value = animations.reviews || "1";
+  if (announcementMotionSelect)
+    announcementMotionSelect.value = animations.announcement || "1";
+  if (toolsMotionSelect) toolsMotionSelect.value = animations.tools || "1";
 };
 
 const collectContent = () => {
@@ -1845,6 +1879,9 @@ const collectContent = () => {
       featured: featuredMotionSelect?.value || defaultContent.animations.featured,
       proofs: proofsMotionSelect?.value || defaultContent.animations.proofs,
       reviews: reviewsMotionSelect?.value || defaultContent.animations.reviews,
+      announcement:
+        announcementMotionSelect?.value || defaultContent.animations.announcement,
+      tools: toolsMotionSelect?.value || defaultContent.animations.tools,
     },
     themeHistory,
   };
@@ -2126,9 +2163,11 @@ bindInputUpdates(
     heroHighlightStyleSelect,
     heroHighlightMotionSelect,
     announcementDirectionSelect,
+    announcementMotionSelect,
     featuredMotionSelect,
     proofsMotionSelect,
     reviewsMotionSelect,
+    toolsMotionSelect,
   ],
   "change"
 );

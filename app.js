@@ -257,7 +257,7 @@ const fallbackContent = {
     reviewsTitle: "What our customer say",
     toolsLabel: "All Tools",
     toolsTitle: "Choose the right plan for every AI workflow.",
-    viewAllLabel: "View All",
+    viewAllLabel: "View All Tools",
     toolsModalTitle: "All Tools",
     toolsSearchPlaceholder: "Search tools by name",
     proofsLabel: "Customer Reviews",
@@ -273,58 +273,52 @@ const fallbackContent = {
   },
   faq: [
     {
-      question: "What if the account doesn't work?",
+      question: "How fast do I get access after payment?",
       answer:
-        "We offer a 100% Replacement Guarantee. If you face any login issues or service problems, we'll provide an instant replacement. Simply message us on Instagram, Telegram, or WhatsApp and we'll resolve the issue within 24-48 hours.",
+        "Most orders are delivered within 0-6 hours. You'll receive login details and simple setup steps once payment is confirmed.",
       icon: 0,
     },
     {
-      question: "How long does delivery take exactly?",
+      question: "What is included in the shared plan?",
       answer:
-        "After payment confirmation, delivery typically takes 0 to 6 hours. Usually you'll receive your account within 2-3 hours. During peak hours (evening), there might be slight delays, but maximum delivery time is 6 hours. Instant delivery is available for priority orders.",
+        "Shared plans include verified access, usage guidelines, and support. We keep the number of users per account limited for stability.",
       icon: 1,
     },
     {
-      question: "Are shared accounts safe? Will I get banned?",
+      question: "Can I upgrade from shared to private later?",
       answer:
-        "Shared accounts are 100% safe. We've served 1000+ customers without any major issues. We carefully manage the number of members per account. Your privacy is protected - no one gets access to your personal details. If you need complete privacy, private account options are available in premium plans.",
+        "Yes. You can upgrade anytime. We'll apply your remaining value toward the private plan and send fresh credentials.",
       icon: 2,
     },
     {
-      question: "What is your refund policy?",
+      question: "What happens if access stops working?",
       answer:
-        "Our policy is: No Refunds, Only Replacements. If an account stops working, we provide a replacement. Refunds are only issued in extreme cases when we cannot deliver the service. Please carefully select your plan, and if you have doubts, DM us on Instagram first.",
+        "We replace the account quickly. Just message support with the issue and we'll restore access.",
       icon: 3,
     },
     {
-      question: "What's the difference between Private and Shared accounts?",
+      question: "Do you support multiple tools in one order?",
       answer:
-        "Shared Account: Multiple users (3-10 members) share the same account. Budget-friendly but may have minor limitations (like simultaneous usage limits). Private Account: Exclusively for you - no sharing. Full control, zero downtime, no limitations. Best for agencies and heavy users.",
+        "Yes. You can bundle multiple tools in a single order. Ask support for a combined quote.",
       icon: 4,
     },
     {
-      question: "What's the process after payment?",
+      question: "How long does each plan last?",
       answer:
-        "Step 1: Make payment via UPI - x@upi. Step 2: Fill the Google Form with screenshot. Step 3: Send a DM on Instagram for confirmation. Step 4: Receive account details within 0-6 hours (login, password, instructions). Step 5: Login and enjoy premium access.",
+        "Plan validity matches the duration you select (monthly, quarterly, yearly). We send a reminder before renewal.",
       icon: 5,
     },
     {
-      question: "How long will the account remain valid?",
+      question: "Is my usage private?",
       answer:
-        "The validity matches your selected plan. For example: 1 Month = 30 days, 3 Months = 90 days, etc. If any issues arise during this period, you'll get a replacement, but validity doesn't extend. You'll receive a renewal reminder before expiry.",
+        "We never ask for your personal data. For maximum privacy, choose a private plan.",
       icon: 6,
     },
     {
-      question: "Can I order multiple services together?",
+      question: "What payment methods do you accept?",
       answer:
-        "Absolutely! You can order multiple services in a single order. For example: ChatGPT + Netflix + Canva together. We also offer special discounts on bulk orders. DM us on Instagram to discuss.",
+        "We accept popular online payment options. Contact us to confirm the best method for your region.",
       icon: 7,
-    },
-    {
-      question: "Is this legal? Is it safe?",
-      answer:
-        "We resell premium accounts - this is a grey market practice (not illegal, but not officially endorsed by service providers). Thousands of people use such services safely. We provide responsible service with a replacement guarantee. Your payment is secure via UPI.",
-      icon: 8,
     },
   ],
   contactPoints: [
@@ -386,6 +380,8 @@ const fallbackContent = {
     featured: "1",
     proofs: "1",
     reviews: "1",
+    announcement: "1",
+    tools: "1",
   },
 };
 
@@ -432,6 +428,8 @@ const featuredTrackClone = document.getElementById("featuredTrackClone");
 const alertTitle1 = document.getElementById("alertTitle1");
 const alertTitle2 = document.getElementById("alertTitle2");
 const alertValue2 = document.getElementById("alertValue2");
+const countdownEl = document.getElementById("countdown");
+const slotsLeftEl = document.getElementById("slots-left");
 const announcementBanner = document.getElementById("announcementBanner");
 const announcementInner = document.getElementById("announcementInner");
 const announcementTrack = document.getElementById("announcementTrack");
@@ -551,6 +549,11 @@ const normalizeFeaturedTools = (items) => {
   });
 
   return normalized;
+};
+
+const normalizeMotion = (value, allowed, fallback) => {
+  const normalized = String(value || "").trim();
+  return allowed.includes(normalized) ? normalized : fallback;
 };
 
 const normalizeNavLinks = (links) => {
@@ -690,6 +693,8 @@ const mergeContent = (incoming = {}) => ({
     featured: incoming.animations?.featured || fallbackContent.animations.featured,
     proofs: incoming.animations?.proofs || fallbackContent.animations.proofs,
     reviews: incoming.animations?.reviews || fallbackContent.animations.reviews,
+    announcement: incoming.animations?.announcement || fallbackContent.animations.announcement,
+    tools: incoming.animations?.tools || fallbackContent.animations.tools,
   },
 });
 
@@ -1109,9 +1114,17 @@ const renderAlerts = () => {
   if (alertTitle1) alertTitle1.textContent = primary.title || "";
   if (alertTitle2) alertTitle2.textContent = secondary.title || "";
   if (alertValue2) alertValue2.textContent = secondary.value || "";
+  if (slotsLeftEl && secondary?.value) {
+    const match = String(secondary.value).match(/(\d+)/);
+    if (match) {
+      slotsLeftEl.textContent = match[1];
+    }
+  }
   alertTimerEnabled = primary.useTimer !== false;
-  if (!alertTimerEnabled && offerTimerEl) {
-    offerTimerEl.textContent = primary.value || "";
+  if (!alertTimerEnabled) {
+    const value = primary.value || "";
+    if (offerTimerEl) offerTimerEl.textContent = value;
+    if (countdownEl) countdownEl.textContent = value;
     if (offerTimerInterval) {
       clearInterval(offerTimerInterval);
       offerTimerInterval = null;
@@ -1251,14 +1264,47 @@ const applyHighlightStyle = () => {
 
 const applyAnimations = () => {
   const animations = content.animations || fallbackContent.animations;
+  if (announcementBanner) {
+    announcementBanner.dataset.motion = normalizeMotion(
+      animations.announcement,
+      ["1", "2", "3"],
+      "1"
+    );
+  }
   if (featuredMarquee) {
-    featuredMarquee.dataset.motion = animations.featured || "1";
+    featuredMarquee.dataset.motion = normalizeMotion(
+      animations.featured,
+      ["1", "2", "3", "4", "5", "6"],
+      "1"
+    );
   }
   if (proofsMarquee) {
-    proofsMarquee.dataset.motion = animations.proofs || "1";
+    proofsMarquee.dataset.motion = normalizeMotion(
+      animations.proofs,
+      ["1", "2", "3", "4", "5", "6"],
+      "1"
+    );
   }
   if (reviewsGrid) {
-    reviewsGrid.dataset.motion = animations.reviews || "1";
+    reviewsGrid.dataset.motion = normalizeMotion(
+      animations.reviews,
+      ["1", "2", "3", "4", "5", "6", "7"],
+      "1"
+    );
+  }
+  if (toolsGrid) {
+    toolsGrid.dataset.motion = normalizeMotion(
+      animations.tools,
+      ["1", "2", "3", "4", "5", "6", "7"],
+      "1"
+    );
+  }
+  if (toolsGridModal) {
+    toolsGridModal.dataset.motion = normalizeMotion(
+      animations.tools,
+      ["1", "2", "3", "4", "5", "6", "7"],
+      "1"
+    );
   }
 };
 
@@ -1434,6 +1480,17 @@ const renderAnnouncement = () => {
   updateAnnouncementHeight();
 };
 
+const setButtonLabel = (button, label) => {
+  if (!button) return;
+  const text = label ?? "";
+  const labelSpan = button.querySelector(".btn-label");
+  if (labelSpan) {
+    labelSpan.textContent = text;
+  } else {
+    button.textContent = text;
+  }
+};
+
 const applyContent = () => {
   applyTheme();
   applyHighlightStyle();
@@ -1447,7 +1504,7 @@ const applyContent = () => {
   if (heroHighlight) heroHighlight.textContent = content.hero?.highlightText || "";
   if (heroBrandInline) heroBrandInline.textContent = content.hero?.brandInline || "";
   if (heroPrimaryCta) heroPrimaryCta.textContent = content.hero?.primaryCta || "";
-  if (heroSecondaryCta) heroSecondaryCta.textContent = content.hero?.secondaryCta || "";
+  setButtonLabel(heroSecondaryCta, content.hero?.secondaryCta || "");
   if (heroCardTitle) heroCardTitle.textContent = content.heroCard?.title || "";
   if (heroSubheadPrefix) {
     const prefix = content.hero?.subheadPrefix ? `${content.hero.subheadPrefix.trim()} ` : "";
@@ -1476,7 +1533,7 @@ const applyContent = () => {
   if (contactLabel) contactLabel.textContent = content.headings?.contactLabel || "";
   if (contactTitle) contactTitle.textContent = content.headings?.contactTitle || "";
   if (contactSubhead) contactSubhead.textContent = content.headings?.contactSubhead || "";
-  if (contactCta) contactCta.textContent = content.headings?.contactCta || "";
+  setButtonLabel(contactCta, content.headings?.contactCta || "");
   renderFaq();
   renderContactPoints();
   renderPopup();
@@ -1506,6 +1563,7 @@ const renderToolCards = (container, list) => {
     card.className = "tool-card";
     card.dataset.tool = tool.name;
     card.dataset.defaultDuration = tool.defaultDuration || DEFAULT_DURATION;
+    card.style.setProperty("--tool-index", String(index));
   const hasDurations = Array.isArray(tool.durations) && tool.durations.length > 0;
   const selectId = `duration-${tool.name.replace(/\s+/g, "-").toLowerCase()}-${index}`;
   const initialDuration = hasDurations ? tool.durations[0] : tool.defaultDuration || null;
@@ -1639,7 +1697,11 @@ const updateNavHeight = () => {
 
 const offerTimerEl = document.getElementById("offerTimer");
 const startOfferTimer = () => {
-  if (!offerTimerEl || !alertTimerEnabled) return;
+  if ((!offerTimerEl && !countdownEl) || !alertTimerEnabled) return;
+  const setTimerText = (value) => {
+    if (offerTimerEl) offerTimerEl.textContent = value;
+    if (countdownEl) countdownEl.textContent = value;
+  };
   const STORAGE_KEY = "saasBuddyOfferEnd";
   const now = Date.now();
   let endTime = null;
@@ -1674,16 +1736,16 @@ const startOfferTimer = () => {
   }
   offerTimerInterval = setInterval(() => {
     const secondsLeft = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
-    offerTimerEl.textContent = formatTime(secondsLeft);
+    setTimerText(formatTime(secondsLeft));
     if (secondsLeft <= 0) {
-      offerTimerEl.textContent = "00:00:00";
+      setTimerText("00:00:00");
       clearInterval(offerTimerInterval);
       offerTimerInterval = null;
       return;
     }
   }, 1000);
   const secondsLeft = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
-  offerTimerEl.textContent = formatTime(secondsLeft);
+  setTimerText(formatTime(secondsLeft));
 };
 
 let popupTimerId = null;

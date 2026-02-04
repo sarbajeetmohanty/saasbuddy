@@ -76,7 +76,7 @@
                   />
                 </svg>
               </span>
-              Contact Us</a
+              <span class="btn-label">Contact Us</span></a
             >
           </div>
         </div>
@@ -98,49 +98,10 @@
         </div>
       </section>
 
-      <section class="alert-strip" aria-label="Limited-time alerts">
-        <div class="card-alerts">
-          <div class="card-alert">
-            <span class="alert-icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <circle cx="12" cy="12" r="9"></circle>
-                <path d="M12 7v5l3 2"></path>
-              </svg>
-            </span>
-            <div>
-              <span class="alert-title" id="alertTitle1">Offer ends in</span>
-              <span class="alert-value" id="offerTimer">01:00:00</span>
-            </div>
-          </div>
-          <div class="card-alert">
-            <span class="alert-icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"></path>
-              </svg>
-            </span>
-            <div>
-              <span class="alert-title" id="alertTitle2">Hurry!</span>
-              <span class="alert-value" id="alertValue2">Only 4 slots left today</span>
-            </div>
-          </div>
+      <section class="fomo" aria-label="Limited-time alerts">
+        <div class="container fomo-row">
+          <div class="fomo-item">⏳ Offer ends in <span id="countdown">03:39:39</span></div>
+          <div class="fomo-item">🔥 Hurry! Only <span id="slots-left">1</span> slots left today</div>
         </div>
       </section>
 
@@ -174,7 +135,7 @@
 
         <div class="tools-grid" id="toolsGrid"></div>
         <div class="tools-cta">
-          <button class="view-all" id="viewAllBtn" type="button">View All</button>
+          <button class="view-all" id="viewAllBtn" type="button">View All Tools</button>
         </div>
       </section>
 
@@ -205,7 +166,6 @@
       <section class="proofs" id="proofs">
         <div class="section-head center">
           <div>
-            <p class="section-label" id="proofsLabel">Customer Reviews</p>
             <h3 id="proofsTitle">Customer Reviews</h3>
           </div>
         </div>
@@ -250,7 +210,15 @@
             rel="noopener noreferrer"
             id="contactCta"
           >
-            WhatsApp Us
+            <span class="btn-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" role="img" aria-hidden="true">
+                <path
+                  fill="#25D366"
+                  d="M16 3c-7.2 0-13 5.8-13 12.9 0 2.3.6 4.6 1.8 6.6L3 29l6.8-1.8c1.9 1 4 1.6 6.2 1.6 7.2 0 13-5.8 13-12.9S23.2 3 16 3zm7.6 18.6c-.3.8-1.7 1.4-2.3 1.5-.6.1-1.4.2-2.2-.1-.5-.2-1.2-.4-2-.8-3.5-1.5-5.7-5-5.9-5.3-.2-.3-1.4-1.8-1.4-3.5 0-1.6.9-2.4 1.2-2.7.3-.3.7-.4 1-.4h.7c.2 0 .5 0 .7.6.3.7 1 2.5 1.1 2.7.1.2.1.5 0 .7-.1.3-.2.5-.4.8-.2.3-.4.5-.6.7-.2.2-.4.4-.2.8.2.3.9 1.4 1.9 2.3 1.4 1.2 2.5 1.6 2.9 1.8.3.1.6.1.8-.1.3-.2.8-.8 1-1 .2-.3.5-.3.8-.2.3.1 2.2 1.1 2.6 1.3.4.2.6.3.7.4.1.1.1.7-.2 1.5z"
+                />
+              </svg>
+            </span>
+            <span class="btn-label">WhatsApp Us</span>
           </a>
         </div>
       </section>

@@ -63,6 +63,14 @@
               <option value="left">Right to Left</option>
             </select>
           </div>
+          <div class="field">
+            <label>Banner Speed</label>
+            <select id="announcementMotion">
+              <option value="1">Normal</option>
+              <option value="2">Slow</option>
+              <option value="3">Fast</option>
+            </select>
+          </div>
           <div class="section-row">
             <h4>Banner Messages</h4>
             <button class="ghost" id="addAnnouncementItemBtn" type="button">Add Message</button>
@@ -270,6 +278,17 @@
             <button class="ghost" id="addFeaturedBtn" type="button">Add Logo</button>
           </div>
           <div class="simple-list" id="featuredList"></div>
+          <div class="field">
+            <label>Logo Strip Motion</label>
+            <select id="featuredMotion">
+              <option value="1">Right to Left (Normal)</option>
+              <option value="2">Left to Right (Normal)</option>
+              <option value="3">Right to Left (Slow)</option>
+              <option value="4">Left to Right (Slow)</option>
+              <option value="5">Right to Left (Fast)</option>
+              <option value="6">Left to Right (Fast)</option>
+            </select>
+          </div>
         </div>
       </section>
 
@@ -355,6 +374,18 @@
           </div>
         </div>
         <div class="panel-body">
+          <div class="field">
+            <label>Reviews Motion</label>
+            <select id="reviewsMotion">
+              <option value="1">Top to Bottom (Normal)</option>
+              <option value="2">Top to Bottom (Fast)</option>
+              <option value="3">Top to Bottom (Slow)</option>
+              <option value="4">Bottom to Top (Normal)</option>
+              <option value="5">Bottom to Top (Fast)</option>
+              <option value="6">Bottom to Top (Slow)</option>
+              <option value="7">No Motion</option>
+            </select>
+          </div>
           <div class="reviews-list" id="reviewsList"></div>
         </div>
       </section>
@@ -369,6 +400,18 @@
         </div>
         <div class="panel-body">
           <div class="tools-list" id="toolsList"></div>
+          <div class="field">
+            <label>Tools Animation</label>
+            <select id="toolsMotion">
+              <option value="1">Slide Up (Normal)</option>
+              <option value="2">Slide Up (Fast)</option>
+              <option value="3">Slide Up (Slow)</option>
+              <option value="4">Fade In (Normal)</option>
+              <option value="5">Fade In (Fast)</option>
+              <option value="6">Fade In (Slow)</option>
+              <option value="7">No Motion</option>
+            </select>
+          </div>
         </div>
       </section>
 
@@ -382,6 +425,26 @@
         </div>
         <div class="panel-body">
           <div class="proofs-list" id="proofsList"></div>
+          <div class="two-col">
+            <div class="field">
+              <label>Proofs Motion</label>
+              <select id="proofsMotion">
+                <option value="1">Right to Left (Normal)</option>
+                <option value="2">Left to Right (Normal)</option>
+                <option value="3">Right to Left (Slow)</option>
+                <option value="4">Left to Right (Slow)</option>
+                <option value="5">Right to Left (Fast)</option>
+                <option value="6">Left to Right (Fast)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Proofs Direction</label>
+              <select id="proofsDirection">
+                <option value="left">Right to Left</option>
+                <option value="right">Left to Right</option>
+              </select>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -524,82 +587,6 @@
           <div class="field">
             <label>Tool Message Template (use {tool} and {duration})</label>
             <textarea id="whatsappToolTemplate" rows="4"></textarea>
-          </div>
-        </div>
-      </section>
-
-<section class="panel is-collapsed" data-collapsible="true">
-        <div class="panel-head">
-          <h2>Animations</h2>
-          <div class="panel-actions">
-            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
-          </div>
-        </div>
-        <div class="panel-body">
-          <div class="two-col">
-            <div class="field">
-              <label>Logo Strip Motion</label>
-              <select id="featuredMotion">
-                <option value="1">Left - Standard</option>
-                <option value="2">Right - Standard</option>
-                <option value="3">Left - Slow</option>
-                <option value="4">Right - Slow</option>
-                <option value="5">Left - Fast</option>
-                <option value="6">Right - Fast</option>
-                <option value="7">Left - Smooth</option>
-                <option value="8">Right - Smooth</option>
-                <option value="9">Left - Oscillate</option>
-                <option value="10">Right - Oscillate</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>Proofs Motion</label>
-              <select id="proofsMotion">
-                <option value="1">Left - Standard</option>
-                <option value="2">Right - Standard</option>
-                <option value="3">Left - Slow</option>
-                <option value="4">Right - Slow</option>
-                <option value="5">Left - Fast</option>
-                <option value="6">Right - Fast</option>
-                <option value="7">Left - Smooth</option>
-                <option value="8">Right - Smooth</option>
-                <option value="9">Left - Oscillate</option>
-                <option value="10">Right - Oscillate</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>Reviews Motion</label>
-              <select id="reviewsMotion">
-                <option value="1">Vertical - Standard</option>
-                <option value="2">Vertical - Reverse</option>
-                <option value="3">Vertical - Fast</option>
-                <option value="4">Vertical - Slow</option>
-                <option value="5">Horizontal - Standard</option>
-                <option value="6">Horizontal - Reverse</option>
-                <option value="7">Vertical - Oscillate</option>
-                <option value="8">Vertical - Smooth</option>
-                <option value="9">Vertical - Bounce</option>
-                <option value="10">No Motion</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </section>
-
-<section class="panel is-collapsed" data-collapsible="true">
-        <div class="panel-head">
-          <h2>Proofs Direction</h2>
-          <div class="panel-actions">
-            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
-          </div>
-        </div>
-        <div class="panel-body">
-          <div class="field">
-            <label>Proofs Scroll Direction</label>
-            <select id="proofsDirection">
-              <option value="left">Right to Left (default)</option>
-              <option value="right">Left to Right</option>
-            </select>
           </div>
         </div>
       </section>
