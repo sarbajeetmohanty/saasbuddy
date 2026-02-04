@@ -553,11 +553,41 @@ const normalizeFeaturedTools = (items) => {
   return normalized;
 };
 
+const normalizeNavLinks = (links) => {
+  const cleaned = Array.isArray(links)
+    ? links
+        .map((link) => ({
+          label: String(link?.label || "").trim(),
+          href: String(link?.href || "").trim(),
+        }))
+        .filter((link) => link.label && link.href)
+    : [];
+  const fallback = fallbackContent.nav.links;
+
+  const isTools = (link) => {
+    const href = String(link?.href || "").trim().toLowerCase();
+    const label = String(link?.label || "").trim().toLowerCase();
+    return href === "#tools" || label === "all tools" || label === "tools";
+  };
+
+  const isReviews = (link) => {
+    const href = String(link?.href || "").trim().toLowerCase();
+    const label = String(link?.label || "").trim().toLowerCase();
+    return href === "#proofs" || label.includes("review");
+  };
+
+  const allTools = cleaned.find(isTools) || fallback.find(isTools) || fallback[0];
+  const reviews = cleaned.find(isReviews) || fallback.find(isReviews) || fallback[1];
+  const rest = cleaned.filter((link) => !isTools(link) && !isReviews(link));
+
+  return [allTools, ...rest, reviews].filter(Boolean);
+};
+
 const mergeContent = (incoming = {}) => ({
   nav: {
     logoText: incoming.nav?.logoText || fallbackContent.nav.logoText,
     contactLabel: incoming.nav?.contactLabel || fallbackContent.nav.contactLabel,
-    links: mergeArray(incoming.nav?.links, fallbackContent.nav.links),
+    links: normalizeNavLinks(incoming.nav?.links),
   },
   announcement: {
     enabled:
@@ -1238,6 +1268,12 @@ const updateAnnouncementHeight = () => {
     ? 0
     : announcementBanner.offsetHeight || 0;
   document.documentElement.style.setProperty("--announcement-height", `${height}px`);
+  const ctaHidden = announcementCta?.classList.contains("hidden");
+  const ctaWidth =
+    announcementBanner.classList.contains("hidden") || ctaHidden
+      ? 0
+      : announcementCta?.offsetWidth || 0;
+  document.documentElement.style.setProperty("--announcement-cta-width", `${ctaWidth}px`);
 };
 
 const ANNOUNCEMENT_ICON_SVGS = {

@@ -509,6 +509,36 @@ const defaultData = {
 
 const mergeArray = (value, fallback) => (Array.isArray(value) ? value : fallback);
 
+const normalizeNavLinks = (links) => {
+  const cleaned = Array.isArray(links)
+    ? links
+        .map((link) => ({
+          label: String(link?.label || "").trim(),
+          href: String(link?.href || "").trim(),
+        }))
+        .filter((link) => link.label && link.href)
+    : [];
+  const fallback = defaultContent.nav.links;
+
+  const isTools = (link) => {
+    const href = String(link?.href || "").trim().toLowerCase();
+    const label = String(link?.label || "").trim().toLowerCase();
+    return href === "#tools" || label === "all tools" || label === "tools";
+  };
+
+  const isReviews = (link) => {
+    const href = String(link?.href || "").trim().toLowerCase();
+    const label = String(link?.label || "").trim().toLowerCase();
+    return href === "#proofs" || label.includes("review");
+  };
+
+  const allTools = cleaned.find(isTools) || fallback.find(isTools) || fallback[0];
+  const reviews = cleaned.find(isReviews) || fallback.find(isReviews) || fallback[1];
+  const rest = cleaned.filter((link) => !isTools(link) && !isReviews(link));
+
+  return [allTools, ...rest, reviews].filter(Boolean);
+};
+
 const normalizeFeaturedTools = (items) => {
   const list = Array.isArray(items) ? items : [];
   const normalized = list
@@ -546,7 +576,7 @@ const mergeContent = (content = {}) => ({
   nav: {
     logoText: content.nav?.logoText || defaultContent.nav.logoText,
     contactLabel: content.nav?.contactLabel || defaultContent.nav.contactLabel,
-    links: mergeArray(content.nav?.links, defaultContent.nav.links),
+    links: normalizeNavLinks(content.nav?.links),
   },
     announcement: {
       enabled:
