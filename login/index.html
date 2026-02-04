@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../login.css" />
+  </head>
+  <body>
+    <div class="login-shell">
+      <div class="login-card">
+        <p class="eyebrow">Admin Access</p>
+        <h1>Tool Website Login</h1>
+        <p class="subtitle">
+          Enter your password to manage tools, proofs, and reviews.
+        </p>
+
+        <form id="loginForm">
+          <label class="field">
+            <span>Email</span>
+            <input
+              id="emailInput"
+              type="email"
+              placeholder="Enter your email"
+              autocomplete="username"
+              required
+            />
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input
+              id="passwordInput"
+              type="password"
+              placeholder="Enter password"
+              autocomplete="current-password"
+              required
+            />
+          </label>
+          <button class="primary" type="submit">Login</button>
+        </form>
+
+        <p class="note" id="loginStatus" role="status" aria-live="polite"></p>
+        <p class="hint">Use your admin email and password.</p>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="../firebase-init.js"></script>
+    <script src="../auth.js" defer></script>
+    <script src="../login.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tool Website Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Sora:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div>
+        <p class="eyebrow">Admin Workspace</p>
+        <h1>Tool Website Manager</h1>
+        <p class="subtitle">
+          Manage tools, logos, durations, proofs, and reviews for the SaaS Buddy website.
+        </p>
+      </div>
+      <div class="actions">
+        <button class="ghost" id="loadDataBtn" type="button">Load From Firebase</button>
+        <button class="ghost" id="logoutBtn" type="button">Logout</button>
+      </div>
+      <div class="actions actions-secondary">
+        <label class="toggle">
+          <input id="autoSaveToggle" type="checkbox" checked />
+          Auto-save on changes
+        </label>
+      </div>
+      <div class="actions actions-bottom">
+        <button class="primary" id="saveDataBtn" type="button">Save to Firebase</button>
+      </div>
+        <p class="hint">
+          Changes save to Firebase and update the site in real time.
+          <span class="note">Use Save if you want to force a write.</span>
+        </p>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </header>
+
+    <main>
+      <section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Announcement Banner</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="inline-row">
+            <label class="toggle">
+              <input id="announcementEnabled" type="checkbox" checked />
+              Show banner
+            </label>
+          </div>
+          <div class="field">
+            <label>Banner Direction</label>
+            <select id="announcementDirection">
+              <option value="right">Left to Right</option>
+              <option value="left">Right to Left</option>
+            </select>
+          </div>
+          <div class="section-row">
+            <h4>Banner Messages</h4>
+            <button class="ghost" id="addAnnouncementItemBtn" type="button">Add Message</button>
+          </div>
+          <div class="simple-list" id="announcementItemsList"></div>
+          <div class="two-col">
+            <div class="field">
+              <label>Button Text</label>
+              <input id="announcementCtaLabel" type="text" placeholder="Join" />
+            </div>
+            <div class="field">
+              <label>Button Link</label>
+              <input id="announcementCtaUrl" type="text" placeholder="https://..." />
+            </div>
+          </div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Top Bar</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="field">
+            <label>Brand Name</label>
+            <input id="navLogoText" type="text" />
+          </div>
+          <div class="section-row">
+            <h4>Menu Links</h4>
+            <button class="ghost" id="addNavLinkBtn" type="button">Add Menu Link</button>
+          </div>
+          <div class="simple-list" id="navLinksList"></div>
+          <div class="field">
+            <label>Contact Button Text</label>
+            <input id="navContactLabel" type="text" />
+          </div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Hero Text</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="two-col">
+            <div class="field">
+              <label>Small Heading</label>
+              <input id="heroEyebrowInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Big Title</label>
+              <input id="heroTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Short Line</label>
+              <input id="heroSubtitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Line Before Highlight</label>
+              <input id="heroSubheadPrefixInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Highlight Text</label>
+              <input id="heroHighlightInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Line After Highlight</label>
+              <input id="heroSubheadSuffixInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Brand Word</label>
+              <input id="heroBrandInlineInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Main Button Text</label>
+              <input id="heroPrimaryCtaInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Second Button Text</label>
+              <input id="heroSecondaryCtaInput" type="text" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Discount Highlight</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="two-col">
+            <div class="field">
+              <label>Highlight Style</label>
+              <select id="heroHighlightStyle">
+                <option value="hl-01">Style 01</option>
+                <option value="hl-02">Style 02</option>
+                <option value="hl-03">Style 03</option>
+                <option value="hl-04">Style 04</option>
+                <option value="hl-05">Style 05</option>
+                <option value="hl-06">Style 06</option>
+                <option value="hl-07">Style 07</option>
+                <option value="hl-08">Style 08</option>
+                <option value="hl-09">Style 09</option>
+                <option value="hl-10">Style 10</option>
+                <option value="hl-11">Style 11</option>
+                <option value="hl-12">Style 12</option>
+                <option value="hl-13">Style 13</option>
+                <option value="hl-14">Style 14</option>
+                <option value="hl-15">Style 15</option>
+                <option value="hl-16">Style 16</option>
+                <option value="hl-17">Style 17</option>
+                <option value="hl-18">Style 18</option>
+                <option value="hl-19">Style 19</option>
+                <option value="hl-20">Style 20</option>
+                <option value="hl-21">Style 21</option>
+                <option value="hl-22">Style 22</option>
+                <option value="hl-23">Style 23</option>
+                <option value="hl-24">Style 24</option>
+                <option value="hl-25">Style 25</option>
+                <option value="hl-26">Style 26</option>
+                <option value="hl-27">Style 27</option>
+                <option value="hl-28">Style 28</option>
+                <option value="hl-29">Style 29</option>
+                <option value="hl-30">Style 30</option>
+                <option value="hl-31">Style 31</option>
+                <option value="hl-32">Style 32</option>
+                <option value="hl-33">Style 33</option>
+                <option value="hl-34">Style 34</option>
+                <option value="hl-35">Style 35</option>
+                <option value="hl-36">Style 36</option>
+                <option value="hl-37">Style 37</option>
+                <option value="hl-38">Style 38</option>
+                <option value="hl-39">Style 39</option>
+                <option value="hl-40">Style 40</option>
+                <option value="hl-41">Style 41</option>
+                <option value="hl-42">Style 42</option>
+                <option value="hl-43">Style 43</option>
+                <option value="hl-44">Style 44</option>
+                <option value="hl-45">Style 45</option>
+                <option value="hl-46">Style 46</option>
+                <option value="hl-47">Style 47</option>
+                <option value="hl-48">Style 48</option>
+                <option value="hl-49">Style 49</option>
+                <option value="hl-50">Style 50</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Highlight Animation</label>
+              <select id="heroHighlightMotion">
+                <option value="highlight-motion-1">Flow (default)</option>
+                <option value="highlight-motion-2">Shimmer</option>
+                <option value="highlight-motion-3">Pulse</option>
+                <option value="highlight-motion-4">Glow</option>
+                <option value="highlight-motion-5">Float</option>
+                <option value="highlight-motion-6">Flicker</option>
+                <option value="highlight-motion-7">Pop</option>
+                <option value="highlight-motion-8">Slide</option>
+                <option value="highlight-motion-9">Breathe</option>
+                <option value="highlight-motion-10">No Animation</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Hero Stats</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="field">
+            <label>Stats Title</label>
+            <input id="heroCardTitleInput" type="text" />
+          </div>
+          <div class="section-row">
+            <h4>Stats</h4>
+            <button class="ghost" id="addMetricBtn" type="button">Add Stat</button>
+          </div>
+          <div class="simple-list" id="metricsList"></div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Featured Tools (Logo Strip)</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="section-row">
+            <h4>Logos</h4>
+            <button class="ghost" id="addFeaturedBtn" type="button">Add Logo</button>
+          </div>
+          <div class="simple-list" id="featuredList"></div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Alert Bar</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="section-row">
+            <h4>Messages</h4>
+            <button class="ghost" id="addAlertBtn" type="button">Add Message</button>
+          </div>
+          <div class="simple-list" id="alertsList"></div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Section Titles</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="two-col">
+            <div class="field">
+              <label>Reviews Title</label>
+              <input id="reviewsTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Tools Section Label</label>
+              <input id="toolsLabelInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Tools Section Title</label>
+              <input id="toolsTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>View All Button Text</label>
+              <input id="viewAllLabelInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Tools Popup Title</label>
+              <input id="toolsModalTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Tools Search Placeholder</label>
+              <input id="toolsSearchPlaceholderInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Proofs Label</label>
+              <input id="proofsLabelInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Proofs Title</label>
+              <input id="proofsTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>FAQ Label</label>
+              <input id="faqLabelInput" type="text" />
+            </div>
+            <div class="field">
+              <label>FAQ Title</label>
+              <input id="faqTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>FAQ Intro Line</label>
+              <input id="faqIntroInput" type="text" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Customer Reviews</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+            <button class="primary" id="addReviewBtn" type="button">Add Review</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="reviews-list" id="reviewsList"></div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Tools</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+            <button class="primary" id="addToolBtn" type="button">Add Tool</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="tools-list" id="toolsList"></div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Proofs</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+            <button class="primary" id="addProofBtn" type="button">Add Proof</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="proofs-list" id="proofsList"></div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>FAQs</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="section-row">
+            <h4>Questions</h4>
+            <button class="ghost" id="addFaqBtn" type="button">Add Question</button>
+          </div>
+          <div class="simple-list" id="faqList"></div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Contact Block</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="two-col">
+            <div class="field">
+              <label>Contact Label</label>
+              <input id="contactLabelInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Contact Title</label>
+              <input id="contactTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Contact Description</label>
+              <input id="contactSubheadInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Contact Button Text</label>
+              <input id="contactCtaInput" type="text" />
+            </div>
+          </div>
+          <div class="section-row">
+            <h4>Contact Points</h4>
+            <button class="ghost" id="addContactPointBtn" type="button">Add Point</button>
+          </div>
+          <div class="simple-list" id="contactPointsList"></div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Exit Offer Popup</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="two-col">
+            <div class="field">
+              <label>Title</label>
+              <input id="popupTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Subtitle Prefix</label>
+              <input id="popupSubtitlePrefixInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Subtitle Highlight</label>
+              <input id="popupSubtitleStrongInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Subtitle Suffix</label>
+              <input id="popupSubtitleSuffixInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Badge</label>
+              <input id="popupBadgeInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Discount Number</label>
+              <input id="popupDiscountNumberInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Discount Text</label>
+              <input id="popupDiscountTextInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Description</label>
+              <input id="popupDescriptionInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Code Label</label>
+              <input id="popupCodeLabelInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Code Value</label>
+              <input id="popupCodeValueInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Claim Button Text</label>
+              <input id="popupClaimLabelInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Decline Button Text</label>
+              <input id="popupDeclineLabelInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Urgency Text</label>
+              <input id="popupUrgencyInput" type="text" />
+            </div>
+          </div>
+          <div class="section-row">
+            <h4>Popup Benefits</h4>
+            <button class="ghost" id="addPopupBenefitBtn" type="button">Add Benefit</button>
+          </div>
+          <div class="simple-list" id="popupBenefitsList"></div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>WhatsApp Messages</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="field">
+            <label>Top Bar Message</label>
+            <textarea id="whatsappNavMessage" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label>Popup Claim Message</label>
+            <textarea id="whatsappPopupMessage" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label>Tool Message Template (use {tool} and {duration})</label>
+            <textarea id="whatsappToolTemplate" rows="4"></textarea>
+          </div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Animations</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="two-col">
+            <div class="field">
+              <label>Logo Strip Motion</label>
+              <select id="featuredMotion">
+                <option value="1">Left - Standard</option>
+                <option value="2">Right - Standard</option>
+                <option value="3">Left - Slow</option>
+                <option value="4">Right - Slow</option>
+                <option value="5">Left - Fast</option>
+                <option value="6">Right - Fast</option>
+                <option value="7">Left - Smooth</option>
+                <option value="8">Right - Smooth</option>
+                <option value="9">Left - Oscillate</option>
+                <option value="10">Right - Oscillate</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Proofs Motion</label>
+              <select id="proofsMotion">
+                <option value="1">Left - Standard</option>
+                <option value="2">Right - Standard</option>
+                <option value="3">Left - Slow</option>
+                <option value="4">Right - Slow</option>
+                <option value="5">Left - Fast</option>
+                <option value="6">Right - Fast</option>
+                <option value="7">Left - Smooth</option>
+                <option value="8">Right - Smooth</option>
+                <option value="9">Left - Oscillate</option>
+                <option value="10">Right - Oscillate</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Reviews Motion</label>
+              <select id="reviewsMotion">
+                <option value="1">Vertical - Standard</option>
+                <option value="2">Vertical - Reverse</option>
+                <option value="3">Vertical - Fast</option>
+                <option value="4">Vertical - Slow</option>
+                <option value="5">Horizontal - Standard</option>
+                <option value="6">Horizontal - Reverse</option>
+                <option value="7">Vertical - Oscillate</option>
+                <option value="8">Vertical - Smooth</option>
+                <option value="9">Vertical - Bounce</option>
+                <option value="10">No Motion</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Proofs Direction</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="field">
+            <label>Proofs Scroll Direction</label>
+            <select id="proofsDirection">
+              <option value="left">Right to Left (default)</option>
+              <option value="right">Left to Right</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+<section class="panel is-collapsed" data-collapsible="true">
+        <div class="panel-head">
+          <h2>Search Preview</h2>
+          <div class="panel-actions">
+            <button class="ghost panel-toggle" type="button" aria-expanded="false">Expand</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="two-col">
+            <div class="field">
+              <label>Page Title</label>
+              <input id="seoTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Page Description</label>
+              <input id="seoDescriptionInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Facebook / OG Title</label>
+              <input id="seoOgTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Facebook / OG Description</label>
+              <input id="seoOgDescriptionInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Twitter Title</label>
+              <input id="seoTwitterTitleInput" type="text" />
+            </div>
+            <div class="field">
+              <label>Twitter Description</label>
+              <input id="seoTwitterDescriptionInput" type="text" />
+            </div>
+          </div>
+        </div>
+      </section>
+</main>
+
+    <div class="confirm-overlay" id="confirmOverlay" aria-hidden="true">
+      <div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+        <div class="confirm-icon" aria-hidden="true">!</div>
+        <h3 id="confirmTitle">Confirm Action</h3>
+        <p id="confirmMessage">Are you sure-</p>
+        <div class="confirm-actions">
+          <button class="ghost" id="confirmCancel" type="button">Cancel</button>
+          <button class="primary" id="confirmOk" type="button">Yes, Continue</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-init.js"></script>
+    <script src="auth.js" defer></script>
+    <script src="admin.js" defer></script>
+  </body>
+</html>

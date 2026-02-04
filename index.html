@@ -32,39 +32,47 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="announcement-banner hidden" id="announcementBanner" aria-hidden="true">
+      <div class="banner-marquee">
+        <div class="banner-inner" id="announcementInner">
+          <div class="banner-track" id="announcementTrack"></div>
+          <div class="banner-track" id="announcementTrackClone" aria-hidden="true"></div>
+        </div>
+      </div>
+      <a
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="whatsapp-quick-btn"
+        id="announcementCta"
+      >
+        Join
+      </a>
+    </div>
     <header class="nav">
       <div class="nav-inner">
-        <a class="logo" href="#top">SaaS Buddy</a>
-        <nav class="nav-links">
-          <a href="#tools">All Tools</a>
-          <a href="#proofs">Customer Reviews</a>
-          <a
-            class="nav-contact"
-            data-whatsapp-link
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Contact us</a
-          >
-        </nav>
+        <a class="logo" href="#top" id="navLogo">SaaS Buddy</a>
+        <nav class="nav-links" id="navLinks"></nav>
       </div>
     </header>
 
     <main id="top">
       <section class="hero" id="home">
         <div class="hero-content">
-          <p class="eyebrow">Premium AI Tools Access</p>
-          <h1>Saas Buddy</h1>
-          <h2>Stop Overpaying for AI Tools.</h2>
-          <p class="subhead">
-            Get access to premium AI tools - up to
-            <span class="highlight">85%</span> off on
-            <span class="brand-inline">only SaaSBuddy</span>.
+          <p class="eyebrow" id="heroEyebrow">Premium AI Tools Access</p>
+          <h1 id="heroTitle">Saas Buddy</h1>
+          <h2 id="heroSubtitle">Stop Overpaying for AI Tools.</h2>
+          <p class="subhead" id="heroSubhead">
+            <span id="heroSubheadPrefix">Get access to premium AI tools - up to</span>
+            <span class="highlight-pill hl-10" id="heroHighlight">85% off</span>
+            <span id="heroSubheadSuffix">on</span>
+            <span class="brand-inline" id="heroBrandInline">only SaaSBuddy</span>
           </p>
           <div class="hero-cta">
-            <a class="primary-btn" href="#tools">Explore Tools</a>
+            <a class="primary-btn" href="#tools" id="heroPrimaryCta">Explore Tools</a>
             <a
               class="ghost-btn nav-contact"
+              id="heroSecondaryCta"
               data-whatsapp-link
               href="#"
               target="_blank"
@@ -83,25 +91,8 @@
         </div>
         <div class="hero-panel">
           <div class="hero-card">
-            <p class="card-title">Why customer buy from us</p>
-            <div class="card-metrics">
-              <div>
-                <span class="metric">85%</span>
-                <span class="metric-label">Avg. savings</span>
-              </div>
-              <div>
-                <span class="metric">1000+</span>
-                <span class="metric-label">Happy customers</span>
-              </div>
-              <div>
-                <span class="metric">100%</span>
-                <span class="metric-label">Refund guarantee</span>
-              </div>
-              <div>
-                <span class="metric">0-6 Hours</span>
-                <span class="metric-label">Instant delivery</span>
-              </div>
-            </div>
+            <p class="card-title" id="heroCardTitle">Why customer buy from us</p>
+            <div class="card-metrics" id="heroMetrics"></div>
           </div>
           <div class="hero-glow"></div>
         </div>
@@ -110,90 +101,8 @@
       <section class="logo-strip" aria-label="Featured tools">
         <div class="marquee">
           <div class="marquee-inner">
-            <div class="marquee-track">
-              <div class="tool-chip">
-                <div class="chip-icon">C</div>
-                <span>ChatGPT</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">Cl</div>
-                <span>Claude</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">H</div>
-                <span>Higg Field</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">M</div>
-                <span>Midjourney</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">P</div>
-                <span>Perplexity</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">N</div>
-                <span>Notion AI</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">R</div>
-                <span>Runway</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">F</div>
-                <span>Figma AI</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">G</div>
-                <span>Gamma</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">S</div>
-                <span>Synthesia</span>
-              </div>
-            </div>
-            <div class="marquee-track" aria-hidden="true">
-              <div class="tool-chip">
-                <div class="chip-icon">C</div>
-                <span>ChatGPT</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">Cl</div>
-                <span>Claude</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">H</div>
-                <span>Higg Field</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">M</div>
-                <span>Midjourney</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">P</div>
-                <span>Perplexity</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">N</div>
-                <span>Notion AI</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">R</div>
-                <span>Runway</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">F</div>
-                <span>Figma AI</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">G</div>
-                <span>Gamma</span>
-              </div>
-              <div class="tool-chip">
-                <div class="chip-icon">S</div>
-                <span>Synthesia</span>
-              </div>
-            </div>
+            <div class="marquee-track" id="featuredTrack"></div>
+            <div class="marquee-track" id="featuredTrackClone" aria-hidden="true"></div>
           </div>
         </div>
       </section>
@@ -201,17 +110,44 @@
       <section class="alert-strip" aria-label="Limited-time alerts">
         <div class="card-alerts">
           <div class="card-alert">
-            <span class="alert-icon">⏳</span>
+            <span class="alert-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 7v5l3 2"></path>
+              </svg>
+            </span>
             <div>
-              <span class="alert-title">Offer ends in</span>
+              <span class="alert-title" id="alertTitle1">Offer ends in</span>
               <span class="alert-value" id="offerTimer">01:00:00</span>
             </div>
           </div>
           <div class="card-alert">
-            <span class="alert-icon">🔥</span>
+            <span class="alert-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"></path>
+              </svg>
+            </span>
             <div>
-              <span class="alert-title">Hurry!</span>
-              <span class="alert-value">Only 4 slots left today</span>
+              <span class="alert-title" id="alertTitle2">Hurry!</span>
+              <span class="alert-value" id="alertValue2">Only 4 slots left today</span>
             </div>
           </div>
         </div>
@@ -220,197 +156,18 @@
       <section class="text-reviews" aria-label="Client reviews">
         <div class="section-head center">
           <div>
-            <h3>What our customer say</h3>
+            <h3 id="reviewsTitle">What our customer say</h3>
           </div>
         </div>
-        <div class="review-motion-grid">
+        <div class="review-motion-grid" id="reviewsGrid">
           <div class="review-column column-up">
-            <div class="review-stack">
-              <article class="review-card">
-                <p>
-                  Saved us weeks of tooling research. The discounts are real and the setup
-                  was instant.
-                </p>
-                <div class="client">
-                  <span class="client-name">Ted Fluck</span>
-                  <span class="client-role">IGTD Philips</span>
-                </div>
-              </article>
-              <article class="review-card">
-                <p>
-                  The SaaSBuddy access cut our budget while keeping our favorite AI stack.
-                </p>
-                <div class="client">
-                  <span class="client-name">Volodymyr Dybenko</span>
-                  <span class="client-role">CEO at Salee</span>
-                </div>
-              </article>
-              <article class="review-card">
-                <p>
-                  Quick support, huge savings, and professional onboarding. Highly
-                  recommended.
-                </p>
-                <div class="client">
-                  <span class="client-name">Helge Hoffmann</span>
-                  <span class="client-role">Creative Director</span>
-                </div>
-              </article>
-              <article class="review-card" aria-hidden="true">
-                <p>
-                  Saved us weeks of tooling research. The discounts are real and the setup
-                  was instant.
-                </p>
-                <div class="client">
-                  <span class="client-name">Ted Fluck</span>
-                  <span class="client-role">IGTD Philips</span>
-                </div>
-              </article>
-              <article class="review-card" aria-hidden="true">
-                <p>
-                  The SaaSBuddy access cut our budget while keeping our favorite AI stack.
-                </p>
-                <div class="client">
-                  <span class="client-name">Volodymyr Dybenko</span>
-                  <span class="client-role">CEO at Salee</span>
-                </div>
-              </article>
-              <article class="review-card" aria-hidden="true">
-                <p>
-                  Quick support, huge savings, and professional onboarding. Highly
-                  recommended.
-                </p>
-                <div class="client">
-                  <span class="client-name">Helge Hoffmann</span>
-                  <span class="client-role">Creative Director</span>
-                </div>
-              </article>
-            </div>
+            <div class="review-stack" id="reviewStackA"></div>
           </div>
-
           <div class="review-column column-down">
-            <div class="review-stack">
-              <article class="review-card">
-                <p>
-                  We never realised the power of paid advertising until we found
-                  Conversion. It's doubled our revenue in just a few months.
-                </p>
-                <div class="client">
-                  <span class="client-name">Amber Staynings</span>
-                  <span class="client-role">CEO at Hurricane HL Ltd</span>
-                </div>
-              </article>
-              <article class="review-card">
-                <p>
-                  AcquisitionX's social media expertise helped me close a commercial real
-                  estate deal through LinkedIn and Facebook outreach.
-                </p>
-                <div class="client">
-                  <span class="client-name">Syed Sikandar</span>
-                  <span class="client-role">Sales Manager</span>
-                </div>
-              </article>
-              <article class="review-card">
-                <p>
-                  Suprava and her team at Ogilvy provided incredible copywriting support
-                  with attention to detail and creativity.
-                </p>
-                <div class="client">
-                  <span class="client-name">Helge Hoffmann</span>
-                  <span class="client-role">Creative Director</span>
-                </div>
-              </article>
-              <article class="review-card" aria-hidden="true">
-                <p>
-                  We never realised the power of paid advertising until we found
-                  Conversion. It's doubled our revenue in just a few months.
-                </p>
-                <div class="client">
-                  <span class="client-name">Amber Staynings</span>
-                  <span class="client-role">CEO at Hurricane HL Ltd</span>
-                </div>
-              </article>
-              <article class="review-card" aria-hidden="true">
-                <p>
-                  AcquisitionX's social media expertise helped me close a commercial real
-                  estate deal through LinkedIn and Facebook outreach.
-                </p>
-                <div class="client">
-                  <span class="client-name">Syed Sikandar</span>
-                  <span class="client-role">Sales Manager</span>
-                </div>
-              </article>
-              <article class="review-card" aria-hidden="true">
-                <p>
-                  Suprava and her team at Ogilvy provided incredible copywriting support
-                  with attention to detail and creativity.
-                </p>
-                <div class="client">
-                  <span class="client-name">Helge Hoffmann</span>
-                  <span class="client-role">Creative Director</span>
-                </div>
-              </article>
-            </div>
+            <div class="review-stack" id="reviewStackB"></div>
           </div>
-
           <div class="review-column column-up">
-            <div class="review-stack">
-              <article class="review-card">
-                <p>
-                  Our Instagram and LinkedIn pages saw up to a 50,000 view increase,
-                  bringing incredible visibility to our brand.
-                </p>
-                <div class="client">
-                  <span class="client-name">Maya Schmid</span>
-                  <span class="client-role">Change Consultant</span>
-                </div>
-              </article>
-              <article class="review-card">
-                <p>
-                  The AI tool discounts were legit and the onboarding was smooth and fast.
-                </p>
-                <div class="client">
-                  <span class="client-name">Maya Schmid</span>
-                  <span class="client-role">Consultant</span>
-                </div>
-              </article>
-              <article class="review-card">
-                <p>
-                  Support is responsive and the process is transparent. Great value.
-                </p>
-                <div class="client">
-                  <span class="client-name">Amber Staynings</span>
-                  <span class="client-role">CEO at Hurricane HL Ltd</span>
-                </div>
-              </article>
-              <article class="review-card" aria-hidden="true">
-                <p>
-                  Our Instagram and LinkedIn pages saw up to a 50,000 view increase,
-                  bringing incredible visibility to our brand.
-                </p>
-                <div class="client">
-                  <span class="client-name">Maya Schmid</span>
-                  <span class="client-role">Change Consultant</span>
-                </div>
-              </article>
-              <article class="review-card" aria-hidden="true">
-                <p>
-                  The AI tool discounts were legit and the onboarding was smooth and fast.
-                </p>
-                <div class="client">
-                  <span class="client-name">Maya Schmid</span>
-                  <span class="client-role">Consultant</span>
-                </div>
-              </article>
-              <article class="review-card" aria-hidden="true">
-                <p>
-                  Support is responsive and the process is transparent. Great value.
-                </p>
-                <div class="client">
-                  <span class="client-name">Amber Staynings</span>
-                  <span class="client-role">CEO at Hurricane HL Ltd</span>
-                </div>
-              </article>
-            </div>
+            <div class="review-stack" id="reviewStackC"></div>
           </div>
         </div>
       </section>
@@ -419,10 +176,9 @@
       <section class="tools" id="tools">
         <div class="section-head">
           <div>
-            <p class="section-label">All Tools</p>
-            <h3>Choose the right plan for every AI workflow.</h3>
+            <p class="section-label" id="toolsLabel">All Tools</p>
+            <h3 id="toolsTitle">Choose the right plan for every AI workflow.</h3>
           </div>
-        </div>
         </div>
 
         <div class="tools-grid" id="toolsGrid"></div>
@@ -458,30 +214,16 @@
       <section class="proofs" id="proofs">
         <div class="section-head center">
           <div>
-            <p class="section-label">Customer Reviews</p>
-            <h3>Customer Reviews</h3>
+            <p class="section-label" id="proofsLabel">Customer Reviews</p>
+            <h3 id="proofsTitle">Customer Reviews</h3>
           </div>
         </div>
 
         <div class="proofs-box">
           <div class="proofs-marquee">
             <div class="proofs-inner">
-              <div class="proofs-track">
-                <div class="proof-card"><div class="proof-image">Proof 01</div></div>
-                <div class="proof-card"><div class="proof-image">Proof 02</div></div>
-                <div class="proof-card"><div class="proof-image">Proof 03</div></div>
-                <div class="proof-card"><div class="proof-image">Proof 04</div></div>
-                <div class="proof-card"><div class="proof-image">Proof 05</div></div>
-                <div class="proof-card"><div class="proof-image">Proof 06</div></div>
-              </div>
-              <div class="proofs-track" aria-hidden="true">
-                <div class="proof-card"><div class="proof-image">Proof 01</div></div>
-                <div class="proof-card"><div class="proof-image">Proof 02</div></div>
-                <div class="proof-card"><div class="proof-image">Proof 03</div></div>
-                <div class="proof-card"><div class="proof-image">Proof 04</div></div>
-                <div class="proof-card"><div class="proof-image">Proof 05</div></div>
-                <div class="proof-card"><div class="proof-image">Proof 06</div></div>
-              </div>
+              <div class="proofs-track" id="proofsTrack"></div>
+              <div class="proofs-track" id="proofsTrackClone" aria-hidden="true"></div>
             </div>
           </div>
         </div>
@@ -490,114 +232,24 @@
       <section class="faq" aria-label="Frequently asked questions">
         <div class="section-head center">
           <div>
-            <p class="section-label">FAQ</p>
-            <h3>Frequently Asked Questions</h3>
-            <p class="faq-intro">Common questions about our premium services</p>
+            <p class="section-label" id="faqLabel">FAQ</p>
+            <h3 id="faqTitle">Frequently Asked Questions</h3>
+            <p class="faq-intro" id="faqIntro">Common questions about our premium services</p>
           </div>
         </div>
-        <div class="faq-grid">
-          <details>
-            <summary>🔄 What if the account doesn't work?</summary>
-            <p>
-              We offer a 100% Replacement Guarantee. If you face any login issues or
-              service problems, we'll provide an instant replacement. Simply message us on
-              Instagram, Telegram, or WhatsApp and we'll resolve the issue within 24-48
-              hours.
-            </p>
-          </details>
-          <details>
-            <summary>⏰ How long does delivery take exactly?</summary>
-            <p>
-              After payment confirmation, delivery typically takes 0 to 6 hours. Usually
-              you'll receive your account within 2-3 hours. During peak hours (evening),
-              there might be slight delays, but maximum delivery time is 6 hours. Instant
-              delivery is available for priority orders.
-            </p>
-          </details>
-          <details>
-            <summary>🔒 Are shared accounts safe? Will I get banned?</summary>
-            <p>
-              Shared accounts are 100% safe. We've served 1000+ customers without any major
-              issues. We carefully manage the number of members per account. Your privacy
-              is protected - no one gets access to your personal details. If you need
-              complete privacy, private account options are available in premium plans.
-            </p>
-          </details>
-          <details>
-            <summary>💰 What is your refund policy?</summary>
-            <p>
-              Our policy is: No Refunds, Only Replacements. If an account stops working, we
-              provide a replacement. Refunds are only issued in extreme cases when we
-              cannot deliver the service. Please carefully select your plan, and if you
-              have doubts, DM us on Instagram first.
-            </p>
-          </details>
-          <details>
-            <summary>🆚 What's the difference between Private and Shared accounts?</summary>
-            <p>
-              Shared Account: Multiple users (3-10 members) share the same account.
-              Budget-friendly but may have minor limitations (like simultaneous usage
-              limits).
-            </p>
-            <p>
-              Private Account: Exclusively for you - no sharing. Full control, zero
-              downtime, no limitations. Best for agencies and heavy users.
-            </p>
-          </details>
-          <details>
-            <summary>📱 What's the process after payment?</summary>
-            <p>Step 1: Make payment via UPI - x@upi</p>
-            <p>Step 2: Fill the Google Form with screenshot</p>
-            <p>Step 3: Send a DM on Instagram for confirmation</p>
-            <p>
-              Step 4: Receive account details within 0-6 hours (login, password,
-              instructions)
-            </p>
-            <p>Step 5: Login and enjoy premium access! 🎉</p>
-          </details>
-          <details>
-            <summary>🛡️ How long will the account remain valid?</summary>
-            <p>
-              The validity matches your selected plan. For example: 1 Month = 30 days, 3
-              Months = 90 days, etc. If any issues arise during this period, you'll get a
-              replacement, but validity doesn't extend. You'll receive a renewal reminder
-              before expiry.
-            </p>
-          </details>
-          <details>
-            <summary>🎯 Can I order multiple services together?</summary>
-            <p>
-              Absolutely! You can order multiple services in a single order. For example:
-              ChatGPT + Netflix + Canva together. We also offer special discounts on bulk
-              orders. DM us on Instagram to discuss.
-            </p>
-          </details>
-          <details>
-            <summary>⚠️ Is this legal? Is it safe?</summary>
-            <p>
-              We resell premium accounts - this is a grey market practice (not illegal, but
-              not officially endorsed by service providers). Thousands of people use such
-              services safely. We provide responsible service with a replacement
-              guarantee. Your payment is secure via UPI.
-            </p>
-          </details>
-        </div>
+        <div class="faq-grid" id="faqGrid"></div>
       </section>
 
       <section class="contact" id="contact">
         <div class="contact-card">
           <div class="contact-content">
-            <p class="section-label">Contact us</p>
-            <h3>Get premium access in hours, not days.</h3>
-            <p class="subhead">
+            <p class="section-label" id="contactLabel">Contact us</p>
+            <h3 id="contactTitle">Get premium access in hours, not days.</h3>
+            <p class="subhead" id="contactSubhead">
               Tell us the tool and duration. We'll reply with pricing, delivery time, and
               next steps.
             </p>
-            <ul class="contact-points">
-              <li>Fast replies on WhatsApp</li>
-              <li>Clear pricing, no surprises</li>
-              <li>Delivery within 0–6 hours</li>
-            </ul>
+            <ul class="contact-points" id="contactPoints"></ul>
           </div>
           <a
             class="primary-btn"
@@ -605,6 +257,7 @@
             href="#"
             target="_blank"
             rel="noopener noreferrer"
+            id="contactCta"
           >
             WhatsApp Us
           </a>
@@ -616,48 +269,51 @@
       <div class="exit-popup-content">
         <button class="exit-popup-close" type="button" aria-label="Close popup">✕</button>
         <div class="exit-popup-icon" aria-hidden="true">
-          <svg viewBox="0 0 64 64" role="img">
-            <defs>
-              <linearGradient id="sparkGradient" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stop-color="#5bd2ff" />
-                <stop offset="100%" stop-color="#3f7cff" />
-              </linearGradient>
-            </defs>
+          <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
             <path
-              d="M32 6l7.2 14.6L56 23l-12 11.7L46.9 52 32 43.9 17.1 52 20 34.7 8 23l16.8-2.4L32 6z"
-              fill="url(#sparkGradient)"
+              d="M32 6l26 46H6L32 6z"
+              fill="none"
+              stroke="#ff4d4d"
+              stroke-width="2.8"
+              stroke-linejoin="round"
             />
+            <rect x="30" y="22" width="4" height="18" rx="2" fill="#f7fbff" />
+            <circle cx="32" cy="44" r="2.6" fill="#f7fbff" />
           </svg>
         </div>
-        <h2 class="exit-popup-title">Wait! Don't Leave Empty-Handed!</h2>
-        <p class="exit-popup-subtitle">
-          You're about to miss out on an <strong>EXCLUSIVE</strong> offer!
+        <h2 class="exit-popup-title" id="popupTitle">Wait! This Offer Ends When You Leave</h2>
+        <p class="exit-popup-subtitle" id="popupSubtitle">
+          Claim your <strong>5% discount</strong> now - limited claims today.
         </p>
         <div class="exit-popup-offer">
-          <div class="offer-badge">SPECIAL OFFER</div>
+          <div class="offer-badge" id="popupBadge">SPECIAL OFFER</div>
           <div class="offer-discount">
-            <span class="discount-number">5%</span>
-            <span class="discount-text">OFF</span>
+            <span class="discount-number" id="popupDiscountNumber">5%</span>
+            <span class="discount-text" id="popupDiscountText">OFF</span>
           </div>
-          <p class="offer-description">On Your First Order</p>
+          <p class="offer-description" id="popupDescription">On Your First Order</p>
         </div>
         <div class="exit-popup-code">
-          <span class="code-label">Use Code:</span>
-          <span class="code-value">WELCOME5</span>
+          <span class="code-label" id="popupCodeLabel">Use Code:</span>
+          <span class="code-value" id="popupCodeValue">WELCOME5</span>
         </div>
-        <div class="exit-popup-benefits">
-          <div class="benefit-item"><span class="benefit-tick">✓</span>Instant Delivery in 0-6 Hours</div>
-          <div class="benefit-item"><span class="benefit-tick">✓</span>100% Working Guarantee</div>
-          <div class="benefit-item"><span class="benefit-tick">✓</span>24/7 Customer Support</div>
-        </div>
+        <div class="exit-popup-benefits" id="popupBenefits"></div>
         <div class="exit-popup-actions">
-          <button class="claim-button" type="button">Claim My Discount</button>
-          <button class="decline-button" type="button">No thanks, I'll pay full price</button>
+          <button class="claim-button" type="button" id="popupClaim">Claim My Discount</button>
+          <button class="decline-button" type="button" id="popupDecline">
+            No thanks, I'll pay full price
+          </button>
         </div>
-        <div class="exit-popup-urgency">This offer expires when you close this window!</div>
+        <div class="exit-popup-urgency" id="popupUrgency">
+          This offer closes when you exit this page.
+        </div>
       </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-init.js"></script>
     <script src="app.js" defer></script>
   </body>
 </html>
